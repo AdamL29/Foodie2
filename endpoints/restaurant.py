@@ -11,9 +11,9 @@ def get_restaurant():
     keys = ["name", "address", "city", "email", "phoneNum", "bio"]
     result = run_statement("CALL get_restaurant(?)", [id])
     if (type(result) == list):
-        for clients in result:
-            zipped = zip(keys, clients)
-            clients = (dict(zipped))
+        for restaurant in result:
+            zipped = zip(keys, restaurant)
+            restaurant = (dict(zipped))
             # response.append(dict(zip(keys, clients)))
         return make_response(jsonify(result), 200)
     else:
@@ -21,35 +21,38 @@ def get_restaurant():
 
 @app.post('/api/restaurant')
 def add_restaurant():
-    keys = ["username", "firstName", "lastName", "email", "password"]
-    userName = request.json.get('username')
-    firstName = request.json.get('firstName')
-    lastName = request.json.get('lastName')
+    keys = ["name", "address", "city", "email", "phoneNum", "password", "bio"]
+    name = request.json.get('name')
+    address = request.json.get('address')
+    city = request.json.get('city')
     email = request.json.get('email')
+    phoneNum = request.json.get('phoneNum')
     password = request.json.get('password')
-    results = run_statement("CALL create_restaurant (?,?,?,?,?)", [userName, firstName, lastName, email, password])
+    bio = request.json.get('bio')
+    results = run_statement("CALL create_restaurant (?,?,?,?,?,?,?)", [name, address, city, email, phoneNum, password, bio])
     response = []
     if (type(results) == list):
-        for client in results:
-            response.append(dict(zip(keys, client)))
+        for restaurant in results:
+            response.append(dict(zip(keys, restaurant)))
         return make_response(jsonify(results), 200)
     else:
         return make_response(jsonify(results), 500)
 
 @app.patch('/api/restaurant')
 def update_restaurant():
-    keys = ["username", "firstName", "lastName", "email"]
-    id = request.json.get('userId')
-    userName = request.json.get('username')
-    firstName = request.json.get('firstName')
-    lastName = request.json.get('lastName')
+    keys = ["name", "address", "city", "email", "phoneNum", "password", "bio"]
+    name = request.json.get('name')
+    address = request.json.get('address')
+    city = request.json.get('city')
     email = request.json.get('email')
+    phoneNum = request.json.get('phoneNum')
     password = request.json.get('password')
-    results = run_statement("CALL update_restaurant (?,?,?,?,?,?)", [id, userName, firstName, lastName, email, password])
+    bio = request.json.get('bio')
+    results = run_statement("CALL update_restaurant (?,?,?,?,?,?,?)", [name, address, city, email, phoneNum, password, bio])
     response = []
     if (type(results) == list):
-        for client in results:
-            response.append(dict(zip(keys, client)))
+        for restaurant in results:
+            response.append(dict(zip(keys, restaurant)))
         return make_response(jsonify(results), 200)
     else:
         return make_response(jsonify(results), 500)
