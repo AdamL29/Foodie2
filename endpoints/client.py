@@ -1,3 +1,4 @@
+from app import app
 from flask import Flask, make_response, jsonify, request
 from dbhelpers import run_statement
 from check import check
@@ -72,38 +73,3 @@ def delete_client():
     else:
         return make_response(jsonify(results), 500)
 
-
-# Client Login Endpoint!
-@app.post('/api/client-login')
-def client_login():
-    # required = ['email', 'password']
-    # check_info = check(request.json, required)
-    # if check_info != None:
-    #     return check_info
-    token = uuid4().hex
-    # creates random UUID
-    email = request.json.get("email")
-    password = request.json.get("password")
-    results = run_statement("CALL client_login (?,?,?)", [email, password, token])
-    if (type(results) == list):
-        if results[0][0] == 1:
-            return make_response(jsonify(results), 200)
-        elif results[0][0] == 0:
-            return make_response(jsonify("Sign in Failed"), 500)
-    else:
-        return make_response(jsonify(results), 500)
-
-# Client post is creating a token.
-# Creates user and logs in user, in 2 procedure calls in 1 python
-# Procedure can be used with another procedure.
-# Call procedures within procedures.
-
-if (production_mode == True):
-    print("Running server in production mode")
-    import bjoern #type:ignore
-    bjoern.run(app, "0.0.0.0", 5000)
-else:
-    print("Running in testing mode")
-    from flask_cors import CORS
-    CORS(app)
-    app.run(debug=True)

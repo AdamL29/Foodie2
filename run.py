@@ -2,13 +2,6 @@ from app import app
 from dbcreds import production_mode
 
 
-
-
-# Client post is creating a token.
-# Creates user and logs in user, in 2 procedure calls in 1 python
-# Procedure can be used with another procedure.
-# Call procedures within procedures.
-
 if (production_mode == True):
     print("Running server in production mode")
     import bjoern #type:ignore
