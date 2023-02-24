@@ -41,6 +41,7 @@ def client_logout():
     else:
         return make_response(jsonify(results), 500)
 
+
 # Restaurant Login Endpoint
 @app.post('/api/restaurant-login')
 def restaurant_login():

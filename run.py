@@ -1,6 +1,7 @@
 from app import app
 from dbcreds import production_mode
 
+# Need to review procedures
 
 if (production_mode == True):
     print("Running server in production mode")

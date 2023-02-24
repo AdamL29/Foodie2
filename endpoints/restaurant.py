@@ -14,7 +14,7 @@ def get_restaurant():
         for restaurant in result:
             zipped = zip(keys, restaurant)
             restaurant = (dict(zipped))
-            # response.append(dict(zip(keys, clients)))
+            # response.append(dict(zip(keys, restaurant)))
         return make_response(jsonify(result), 200)
     else:
         return make_response(jsonify(result), 500)
@@ -48,7 +48,8 @@ def update_restaurant():
     phoneNum = request.json.get('phoneNum')
     password = request.json.get('password')
     bio = request.json.get('bio')
-    results = run_statement("CALL update_restaurant (?,?,?,?,?,?,?)", [name, address, city, email, phoneNum, password, bio])
+    id = request.json.get('restaurantId')
+    results = run_statement("CALL update_restaurant (?,?,?,?,?,?,?,?)", [name, address, city, email, phoneNum, password, bio, id])
     response = []
     if (type(results) == list):
         for restaurant in results:
