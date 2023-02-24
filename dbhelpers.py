@@ -1,5 +1,5 @@
 import mariadb
-import dbcreds
+import dbcreds as dbcreds
 
 def connect_db():
     try:
