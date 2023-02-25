@@ -9,15 +9,15 @@ from check import check
 def get_clients():
     id = request.args.get('clientId')
     keys = ["username", "firstName", "lastName", "email", "createdAt"]
-    result = run_statement("CALL get_client(?)", [id])
-    if (type(result) == list):
-        for clients in result:
+    results = run_statement("CALL get_client(?)", [id])
+    if (type(results) == list):
+        for clients in results:
             zipped = zip(keys, clients)
             clients = (dict(zipped))
             # response.append(dict(zip(keys, clients)))
-        return make_response(jsonify(result), 200)
+        return make_response(jsonify(results), 200)
     else:
-        return make_response(jsonify(result), 500)
+        return make_response(jsonify(results), 500)
 
 @app.post('/api/client')
 def add_client():
