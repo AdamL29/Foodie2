@@ -3,21 +3,20 @@ from flask import make_response, jsonify, request
 from dbhelpers import run_statement
 from check import check
 
-
 # Client Endpoint!
 @app.get('/api/client')
 def get_clients():
-    id = request.args.get('clientId')
+    username = request.args.get('userName')
     keys = ["username", "firstName", "lastName", "email", "createdAt"]
-    results = run_statement("CALL get_client(?)", [id])
+    results = run_statement("CALL get_client(?)", [username])
+    response = []
     if (type(results) == list):
-        for clients in results:
-            zipped = zip(keys, clients)
-            clients = (dict(zipped))
-            # response.append(dict(zip(keys, clients)))
-        return make_response(jsonify(results), 200)
+        for client in results:
+            response.append(dict(zip(keys, client)))
+        return make_response(jsonify(response), 200)
     else:
-        return make_response(jsonify(results), 500)
+        return make_response(jsonify(response), 500)
+
 
 @app.post('/api/client')
 def add_client():

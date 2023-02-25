@@ -24,7 +24,7 @@ def client_login():
             return make_response(jsonify("Sign in Failed"), 500)
     else:
         return make_response(jsonify(results), 500)
-
+    
 
 @app.delete('/api/client-login')
 def client_logout():

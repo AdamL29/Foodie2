@@ -9,15 +9,14 @@ from check import check
 def get_restaurant():
     id = request.args.get('restaurantId')
     keys = ["name", "address", "city", "email", "phoneNum", "bio"]
-    result = run_statement("CALL get_restaurant(?)", [id])
-    if (type(result) == list):
-        for restaurant in result:
-            zipped = zip(keys, restaurant)
-            restaurant = (dict(zipped))
-            # response.append(dict(zip(keys, restaurant)))
-        return make_response(jsonify(result), 200)
+    results = run_statement("CALL get_restaurant(?)", [id])
+    response = []
+    if (type(results) == list):
+        for rests in results:
+            response.append(dict(zip(keys, rests)))
+        return make_response(jsonify(response), 200)
     else:
-        return make_response(jsonify(result), 500)
+        return make_response(jsonify(response), 500)
 
 @app.post('/api/restaurant')
 def add_restaurant():
