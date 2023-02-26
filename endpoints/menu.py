@@ -17,9 +17,9 @@ def create_item():
     if (type(results) == list):
         for client in results:
             response.append(dict(zip(keys, client)))
-        return make_response(jsonify(results), 200)
+        return make_response(jsonify(response), 200)
     else:
-        return make_response(jsonify(results), 500)
+        return make_response(jsonify(response), 500)
     
 @app.patch('/api/menu')
 def edit_item():
