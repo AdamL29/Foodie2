@@ -6,6 +6,10 @@ from check import check
 # Orders Endpoint!
 @app.get('/api/orders')
 def get_orders():
+    required = ['token']
+    check_info = check(request.json, required)
+    if check_info != None:
+        return check_info
     id = request.args.get('id')
     keys = ["createdAt", "ifConfirmed", "isCancelled", "isComplete", "restId", "clientId"]
     results = run_statement("CALL get_orders(?)", [id])
@@ -19,6 +23,10 @@ def get_orders():
 
 @app.post('/api/orders')
 def add_orders():
+    required = ['token']
+    check_info = check(request.json, required)
+    if check_info != None:
+        return check_info
     keys = ["orderId", "items"]
     restId = request.json.get('restId')
     items = request.json.get('items')
@@ -33,11 +41,14 @@ def add_orders():
 
 @app.patch('/api/orders')
 def update_orders():
+    required = ['token']
+    check_info = check(request.json, required)
+    if check_info != None:
+        return check_info
     keys = ["orderId", "items"]
-    id = request.json.get('orderId')
     restId = request.json.get('restId')
     items = request.json.get('items')
-    results = run_statement("CALL update_order (?,?)", [id, restId, items])
+    results = run_statement("CALL update_order (?,?)", [restId, items])
     response = []
     if (type(results) == list):
         for client in results:

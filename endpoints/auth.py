@@ -8,10 +8,10 @@ from uuid import uuid4
 # Client Login Endpoint!
 @app.post('/api/client-login')
 def client_login():
-    # required = ['email', 'password']
-    # check_info = check(request.json, required)
-    # if check_info != None:
-    #     return check_info
+    required = ['email', 'password']
+    check_info = check(request.json, required)
+    if check_info != None:
+        return check_info
     token = uuid4().hex
     # creates random UUID
     email = request.json.get("email")
@@ -19,7 +19,7 @@ def client_login():
     results = run_statement("CALL client_login (?,?,?)", [email, password, token])
     if (type(results) == list):
         if results[0][0] == 1:
-            return make_response(jsonify(results), 200)
+            return make_response(jsonify(results,"Login Successful!"), 200)
         elif results[0][0] == 0:
             return make_response(jsonify("Sign in Failed"), 500)
     else:
@@ -34,21 +34,18 @@ def client_logout():
         return check_info
     results = run_statement("CALL client_logout(?)", required)
     if (type(results) == list):
-        if results[0][0] == 1:
-            return make_response(jsonify(results), 200)
-        elif results[0][0] == 0:
-            return make_response(jsonify("Sign out Failed"), 500)
+        return make_response(jsonify("Successfully logged out!"), 200)
     else:
-        return make_response(jsonify(results), 500)
+            return make_response(jsonify("Sign out Failed"), 500)
 
 
 # Restaurant Login Endpoint
 @app.post('/api/restaurant-login')
 def restaurant_login():
-    # required = ['email', 'password']
-    # check_info = check(request.json, required)
-    # if check_info != None:
-    #     return check_info
+    required = ['email', 'password']
+    check_info = check(request.json, required)
+    if check_info != None:
+        return check_info
     token = uuid4().hex
     # creates random UUID
     email = request.json.get("email")
@@ -56,7 +53,7 @@ def restaurant_login():
     results = run_statement("CALL restaurant_login (?,?,?)", [email, password, token])
     if (type(results) == list):
         if results[0][0] == 1:
-            return make_response(jsonify(results), 200)
+            return make_response(jsonify(results,"Login Successful!"), 200)
         elif results[0][0] == 0:
             return make_response(jsonify("Sign in Failed"), 500)
     else:
@@ -68,11 +65,9 @@ def restaurant_logout():
     check_info = check(request.json, required)
     if check_info != None:
         return check_info
-    results = run_statement("CALL restaurant_logout(?)", required)
-    if (type(results) == list):
-        if results[0][0] == 1:
-            return make_response(jsonify(results), 200)
-        elif results[0][0] == 0:
-            return make_response(jsonify("Sign out Failed"), 500)
+    token = request.json.get("token")
+    results = run_statement("CALL restaurant_logout(?)", [token])
+    if (results == None):
+        return make_response(jsonify("Successfully logged out!"), 200)
     else:
-        return make_response(jsonify(results), 500)
+        return make_response(jsonify("Sign out Failed"), 500)

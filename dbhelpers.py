@@ -37,7 +37,7 @@ def execute_statement(cursor, statement, args=[]):
         results = cursor.fetchall()
         return results
     except mariadb.ProgrammingError as e:
-        if "doesn't have a result set" in e.msg:
+        if "doesn't have a result set" in str(e):
             return None
         print("Syntax error in your SQL statement: ", e)
         return str(e)
